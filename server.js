@@ -1,6 +1,8 @@
 const express=require('express');
 const app=express();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
+app.use(express.json());
 const path=require('path');
 const db=require('./mysql');
 const port=process.env.PORT || 3000;
