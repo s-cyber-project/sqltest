@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<form action="/add-book" method="POST">
+
+    <input type="text" name="title" placeholder="Book title">
+
+    <input type="number" name="price" placeholder="Price" step="0.01">
+
+    <input type="text" name="rating" placeholder="Rating">
+
+    <button type="submit">Add Book</button>
+
+</form>
+
+<form action="/delete-book" method="POST">
+
+    <input type="number" name="id" placeholder="ID" step="1">
+
+    <button type="submit">Remove Book</button>
+
+</form>
+</body>
+</html>

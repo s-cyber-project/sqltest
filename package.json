@@ -1,0 +1,17 @@
+{
+  "name": "js-sql",
+  "version": "1.0.0",
+  "description": "Javascript and SQL connection",
+  "license": "ISC",
+  "author": "S.Paul",
+  "type": "commonjs",
+  "main": "first.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.23.4"
+  }
+}
