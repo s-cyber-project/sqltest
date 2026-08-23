@@ -33,6 +33,15 @@ app.post('/delete-book',(req,res)=>{
         }
     });
 });
+app.post("/show-table",(req,res)=>{
+    db.query("SELECT * from book",(err,result)=>{
+        if(err){
+            res.status(500).send('Error showing database');
+        }else{
+            res.json(result);
+        }
+    });
+});
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
 });
