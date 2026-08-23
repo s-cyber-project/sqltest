@@ -10,10 +10,11 @@ app.get('/',(req,res)=>{
     res.sendFile(path.join(__dirname,"index.html"));
 });
 app.post('/add-book',(req,res)=>{
+    const id=req.body.id;
     const title=req.body.title;
     const price=req.body.price;
     const rating=req.body.rating;
-    db.query("INSERT INTO book (title, price, rating) VALUES (?, ?, ?)",[title,price,rating],(err,result)=>{
+    db.query("INSERT INTO book (id, title, price, rating) VALUES (?, ?, ?, ?)",[id,title,price,rating],(err,result)=>{
         if(err){
             res.status(500).send('Error adding book to database');
         }else{
