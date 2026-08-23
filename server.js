@@ -136,9 +136,9 @@ app.post("/show-table", (req, res) => {
             table += `
                 <tr>
                     <td>#${book.id}</td>
-                    <td>📖 ${book.title}</td>
+                    <td>📖 ${book.Title}</td>
                     <td class="price">₹${book.price}</td>
-                    <td class="rating">⭐ ${book.rating}</td>
+                    <td class="rating">⭐ ${book.Rating}</td>
                 </tr>
             `;
         });
