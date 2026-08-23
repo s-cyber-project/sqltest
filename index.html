@@ -3,31 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Book Manager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 30px 15px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 17px;
+            opacity: 0.9;
+        }
+
+        /* Main cards */
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        /* Buttons */
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .add-btn {
+            width: 100%;
+            margin-top: 18px;
+            background: #667eea;
+            color: white;
+        }
+
+        .add-btn:hover {
+            background: #5568d8;
+        }
+
+        .delete-section {
+            display: flex;
+            gap: 12px;
+        }
+
+        .delete-section input {
+            flex: 1;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .show-btn {
+            width: 100%;
+            background: #111827;
+            color: white;
+            font-size: 16px;
+        }
+
+        .show-btn:hover {
+            background: #000;
+        }
+
+        /* Icons */
+        .icon {
+            font-size: 25px;
+            margin-right: 8px;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 12px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .delete-section {
+                flex-direction: column;
+            }
+
+            .delete-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<form action="/add-book" method="POST">
-    <input type="number" name="id" placeholder="ID" step="1">
 
-    <input type="text" name="title" placeholder="Book title">
+<div class="container">
 
-    <input type="number" name="price" placeholder="Price" step="0.01">
+    <div class="header">
+        <h1>📚 Book Manager</h1>
+        <p>Add, remove and manage your books</p>
+    </div>
 
-    <input type="text" name="rating" placeholder="Rating">
 
-    <button type="submit">Add Book</button>
+    <!-- Add Book -->
+    <div class="card">
 
-</form>
+        <h2>
+            <span class="icon">➕</span>
+            Add a Book
+        </h2>
 
-<form action="/delete-book" method="POST">
+        <form action="/add-book" method="POST">
 
-    <input type="number" name="id" placeholder="ID" step="1">
+            <div class="form-grid">
 
-    <button type="submit">Remove Book</button>
+                <div class="input-group">
+                    <label for="id">Book ID</label>
+                    <input
+                        type="number"
+                        id="id"
+                        name="id"
+                        placeholder="Enter ID"
+                        step="1"
+                        required
+                    >
+                </div>
 
-</form>
-    <form action="/show-table" method="POST">
-    <button type="submit">SHOW TABLE</button>
-</form>
+                <div class="input-group">
+                    <label for="title">Book Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Enter book title"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="price">Price</label>
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        placeholder="Enter price"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="rating">Rating</label>
+                    <input
+                        type="text"
+                        id="rating"
+                        name="rating"
+                        placeholder="e.g. 4.5"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <button class="add-btn" type="submit">
+                Add Book
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Delete Book -->
+    <div class="card">
+
+        <h2>
+            <span class="icon">🗑️</span>
+            Remove a Book
+        </h2>
+
+        <form action="/delete-book" method="POST">
+
+            <div class="delete-section">
+
+                <input
+                    type="number"
+                    name="id"
+                    placeholder="Enter Book ID"
+                    step="1"
+                    required
+                >
+
+                <button class="delete-btn" type="submit">
+                    Remove Book
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- Show Table -->
+    <div class="card">
+
+        <h2>
+            <span class="icon">📖</span>
+            View Library
+        </h2>
+
+        <form action="/show-table" method="POST">
+
+            <button class="show-btn" type="submit">
+                SHOW TABLE
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
 </body>
 </html>
