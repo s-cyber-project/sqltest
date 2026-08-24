@@ -1,10 +1,11 @@
-const sql=require('mysql2');
-const db=sql.createPool({
-    host: process.env.MYSQLHOST,
-    port: process.env.MYSQLPORT,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE || 3000
+const Pool = require('pg');
+
+const db = new Pool({
+    host: process.env.PGHOST,
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE,
+    port: process.env.PGPORT
 });
 db.getConnection((err, connection)=>{
     if(err){
