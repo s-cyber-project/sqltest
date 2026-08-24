@@ -1,52 +1,86 @@
-const express=require('express');
-const app=express();
+const express = require('express');
+const app = express();
+const path = require('path');
+
+const db = require('./mysql');
+
+const port = process.env.PORT || 3000;
+
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
 app.use(express.json());
-const path=require('path');
-const db=require('./mysql');
-const port=process.env.PORT || 3000;
-app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname,"index.html"));
-});
-app.post('/add-book',(req,res)=>{
-    const id=req.body.id;
-    const title=req.body.title;
-    const price=req.body.price;
-    const rating=req.body.rating;
-    db.query("INSERT INTO book (id, title, price, rating) VALUES ($1, $2, $3, $4)",[id,title,price,rating],(err,result)=>{
-        if(err){
-            res.status(500).send('Error adding book to database');
-        }else{
-            res.send('Book added successfully');
-        }
-    });
+app.use(express.static(__dirname));
+
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/delete-book',(req,res)=>{
-    const id=req.body.id;
-    db.query("DELETE FROM book where id=$1",[id],(err,result)=>{
-        if(err){
-            res.status(500).send('Error removing book from database');
-        }else{
-            res.send('Book deleted successfully');
-        }
-    });
-});
-app.post("/show-table", (req, res) => {
-    db.query("SELECT * FROM book", (err, result) => {
+
+// ADD BOOK
+app.post('/add-book', (req, res) => {
+
+    const { id, title, price, rating } = req.body;
+
+    const sql = `
+        INSERT INTO book (id, Title, price, Rating)
+        VALUES ($1, $2, $3, $4)
+    `;
+
+    db.query(sql, [id, title, price, rating], (err, result) => {
 
         if (err) {
-            return res.status(500).send("Error showing database");
+            console.log("ADD BOOK ERROR:", err);
+            return res.status(500).send('Error adding book to database');
+        }
+
+        res.send('Book added successfully');
+    });
+});
+
+// DELETE BOOK
+app.post('/delete-book', (req, res) => {
+
+    const id = req.body.id;
+
+    db.query(
+        'DELETE FROM book WHERE id = $1',
+        [id],
+        (err, result) => {
+
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Error removing book from database');
+            }
+
+            res.send('Book deleted successfully');
+        }
+    );
+});
+
+
+// SHOW TABLE
+app.post('/show-table', (req, res) => {
+
+    db.query('SELECT * FROM book', (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error showing database');
         }
 
         let table = `
         <!DOCTYPE html>
+
         <html>
         <head>
+
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1.0">
+
             <title>Book Library</title>
 
             <style>
+
                 body {
                     font-family: Arial, sans-serif;
                     background: #f4f6ff;
@@ -100,6 +134,11 @@ app.post("/show-table", (req, res) => {
                 }
 
                 @media (max-width: 600px) {
+
+                    body {
+                        padding: 15px;
+                    }
+
                     .container {
                         padding: 15px;
                     }
@@ -108,11 +147,14 @@ app.post("/show-table", (req, res) => {
                         font-size: 14px;
                     }
 
-                    th, td {
+                    th,
+                    td {
                         padding: 10px;
                     }
                 }
+
             </style>
+
         </head>
 
         <body>
@@ -131,17 +173,20 @@ app.post("/show-table", (req, res) => {
                 </tr>
         `;
 
-        result.forEach(book => {
+
+        result.rows.forEach(book => {
 
             table += `
                 <tr>
                     <td>#${book.id}</td>
-                    <td>📖 ${book.Title}</td>
+                    <td>📖 ${book.title}</td>
                     <td class="price">₹${book.price}</td>
-                    <td class="rating">⭐ ${book.Rating}</td>
+                    <td class="rating">⭐ ${book.rating}</td>
                 </tr>
             `;
+
         });
+
 
         table += `
             </table>
@@ -153,8 +198,12 @@ app.post("/show-table", (req, res) => {
         `;
 
         res.send(table);
+
     });
+
 });
-app.listen(port,'0.0.0.0',()=>{
+
+
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`);
 });
