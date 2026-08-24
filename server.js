@@ -14,7 +14,7 @@ app.post('/add-book',(req,res)=>{
     const title=req.body.title;
     const price=req.body.price;
     const rating=req.body.rating;
-    db.query("INSERT INTO book (id, title, price, rating) VALUES (?, ?, ?, ?)",[id,title,price,rating],(err,result)=>{
+    db.query("INSERT INTO book (id, title, price, rating) VALUES ($1, $2, $3, $4)",[id,title,price,rating],(err,result)=>{
         if(err){
             res.status(500).send('Error adding book to database');
         }else{
@@ -25,7 +25,7 @@ app.post('/add-book',(req,res)=>{
 
 app.post('/delete-book',(req,res)=>{
     const id=req.body.id;
-    db.query("DELETE FROM book where id=?",[id],(err,result)=>{
+    db.query("DELETE FROM book where id=$1",[id],(err,result)=>{
         if(err){
             res.status(500).send('Error removing book from database');
         }else{
